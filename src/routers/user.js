@@ -48,7 +48,16 @@ router.patch('/users/:id', async (req, res) => {
     }
 
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+        const user = await User.findById(req.params.id)
+
+        updates.forEach((update) => user[update] = req.body[update])
+
+        await user.save()
+
+        // Replaced line below with lines above because to get the mongoose middleware
+        // that we wrote in the user model to run, we have to run 'user.save', which
+        // User.findByIdAndUpdate bypasses by going straight to the database
+        // const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
 
         if (!user) {
             return res.status(404).send()

@@ -48,7 +48,14 @@ router.patch('/tasks/:id', async (req, res) => {
     }
 
     try {
-        const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+        const task = await Task.findById(req.params.id)
+
+        updates.forEach((update) => task[updates] = req.body[update])
+
+        task.save()
+
+        // Replaced line below with lines above (for practice) as did with user patch route
+        // const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
 
         if (!task) {
             res.status(404).send('Cannot find task with this id')
