@@ -33,9 +33,14 @@ const main = async () => {
     // const task = await Task.findById('5eb31c898028a019a52676ee')
     // await task.populate('owner').execPopulate()
     // console.log(task.owner)
-    const user = await User.findById('5eb31c50f042e3196a19db90')
-    await user.populate('tasks').execPopulate()
-    console.log(user.tasks)
+    try {
+        const user = await User.findById('5eb31c50f042e3196a19db90')
+        await user.populate('tasks').execPopulate()
+        console.log(user.tasks)
+    } catch (e) {
+        console.log('Something went wrong')
+    }
+    
 }
 
 main()
